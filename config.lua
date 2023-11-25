@@ -1,7 +1,7 @@
 Config = {}
 
 Config.Price = 1000 -- Price for the taxi
-Config.DriverPed = "a_m_o_genstreet_01" -- Ped You Want To be Driving
+Config.DriverPed = "ig_priest" -- Ped You Want To be Driving
 Config.TaxiCommand = "aitaxi" -- command to start taxi ride
 Config.TaxiStopCommand = 'stoptaxi'
 Config.AutopilotCommand = "autopilot"

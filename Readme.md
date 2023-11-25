@@ -39,6 +39,7 @@ Pet a cat
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 How the script works
+```
 A) AiTaxi
 	1) Do command for taxi call
 	2) taxi will spawn after a few seconds
@@ -50,5 +51,5 @@ B) AutoPilot
 	2) set a waypoint
 	3) do command
 	4) to get control back of your car either do the commandstop OR put your hands up
-
+```
 It will be buggy because its based of fivem natives and its buggy sometimes. 

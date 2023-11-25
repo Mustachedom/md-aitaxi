@@ -1,11 +1,11 @@
 Config = {}
 
 Config.Price = 1000 -- Price for the taxi
-Config.DriverPed = "ig_priest" -- Ped You Want To be Driving
-Config.Command = "aitaxi" -- command to start taxi ride
-Config.CommandStop = 'stoptaxi'
-Config.CommandAutopilot = "autopilot"
-Config.CommandAutopilotstop = "autopilotstop"
+Config.DriverPed = "a_m_o_genstreet_01" -- Ped You Want To be Driving
+Config.TaxiCommand = "aitaxi" -- command to start taxi ride
+Config.TaxiStopCommand = 'stoptaxi'
+Config.AutopilotCommand = "autopilot"
+Config.AutopilotstopCommand = "autopilotstop"
 Config.Fuel = "LegacyFuel" -- name of the resource you use for fuel
 
 Config.AutoPilotCars = {

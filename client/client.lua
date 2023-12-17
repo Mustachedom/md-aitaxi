@@ -1,18 +1,18 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local config = Config
 local ordered = nil
-local autopilot = nil
+local autoPilot = nil
 
-RegisterNetEvent("md-aitaxi:client:payCheck", function()
+RegisterNetEvent('md-aitaxi:client:payCheck', function()
 	if ordered == nil then
-		TriggerServerEvent("md-aitaxi:server:PayForTaxi")
+		TriggerServerEvent('md-aitaxi:server:PayForTaxi')
 		ordered = true
 	else
-		QBCore.Functions.Notify("Already Called A Taxi")
+		QBCore.Functions.Notify('Already Called A Taxi')
 	end
 end)
 
-RegisterNetEvent("md-aitaxi:client:calltaxi", function()
+RegisterNetEvent('md-aitaxi:client:calltaxi', function()
 	local pedCoord = GetEntityCoords(PlayerPedId())
 	local taxiDriver = config.DriverPed
 	if ordered then
@@ -31,7 +31,7 @@ RegisterNetEvent("md-aitaxi:client:calltaxi", function()
 		Wait(2000)
 		if loc < 10.0 then
 			SetPedIntoVehicle(PlayerPedId(), aiTaxi, 0)
-			QBCore.Functions.Notify("Set A Way Point So I Know Where To Go")
+			QBCore.Functions.Notify('Set A Way Point So I Know Where To Go')
 		end
 		repeat
 			Wait(1000)
@@ -55,26 +55,26 @@ RegisterNetEvent("md-aitaxi:client:calltaxi", function()
 			DeleteVehicle(aiTaxi)
 			DeleteEntity(taxi)
 		else
-			QBCore.Functions.Notify("You Left The Vehicle")
+			QBCore.Functions.Notify('You Left The Vehicle')
 		end
 	end
 end)
 
 RegisterCommand(config.TaxiCommand, function()
 	if ordered == nil then
-		QBCore.Functions.Notify("Calling A Taxi")
+		QBCore.Functions.Notify('Calling A Taxi')
 		Wait(7000)
 		TriggerEvent('md-aitaxi:client:payCheck')
 	else
-		QBCore.Functions.Notify("Already Have A Taxi")
+		QBCore.Functions.Notify('Already Have A Taxi')
 	end
 end)
 
-RegisterNetEvent("md-aitaxi:client:autopilot", function()
+RegisterNetEvent('md-aitaxi:client:autopilot', function()
 	local vehicle = GetVehiclePedIsIn(PlayerPedId(), true)
 	if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
 		if IsVehicleValid(GetEntityModel(vehicle)) then
-			autopilot = true
+			autoPilot = true
 			if GetFirstBlipInfoId(8) ~= 0 then
 				Wait(2000)
 				local wayPointBlip = GetFirstBlipInfoId(8)
@@ -83,12 +83,12 @@ RegisterNetEvent("md-aitaxi:client:autopilot", function()
 				local loc2 = #(GetEntityCoords(PlayerPedId()) - coord)
 				print(loc2)
 				if loc2 < 5.0 then
-					autopilot = nil
+					autoPilot = nil
 					ClearPedTasks(PlayerPedId())
 					ClearVehicleTasks(vehicle)
 				end
 			else
-				QBCore.Functions.Notify("Set A Way Point")
+				QBCore.Functions.Notify('Set A Way Point')
 			end
 		end
 	end
@@ -96,7 +96,7 @@ end)
 
 RegisterCommand(config.AutopilotCommand, function()
 	if autopilot then
-		QBCore.Functions.Notify("Already In AutoPilot Mode")
+		QBCore.Functions.Notify('Already In AutoPilot Mode')
 	else
 		TriggerEvent('md-aitaxi:client:autopilot')
 	end
@@ -104,7 +104,7 @@ end)
 
 
 RegisterCommand(config.AutopilotstopCommand, function()
-	autopilot = nil
+	autoPilot = nil
 
 	local vehicle = GetVehiclePedIsIn(PlayerPedId(), true)
 	if vehicle then

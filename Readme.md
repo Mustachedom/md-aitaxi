@@ -35,7 +35,7 @@
 - **STEP 2**
 	- fill out the config to your desire
 
-## Features: Ai Taxi & AutoPilot
+<h1>Features: Ai Taxi & AutoPilot</h1>
 
 **A | Ai Taxi:**
 

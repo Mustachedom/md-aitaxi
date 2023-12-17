@@ -13,7 +13,7 @@ RegisterNetEvent('md-aitaxi:client:payCheck', function()
 end)
 
 RegisterNetEvent('md-aitaxi:client:calltaxi', function()
-	local pedCoord = GetEntityCoords(PlayerPedId())
+	local pedCoord = GetEntityCoords(cache.ped)
 	local taxiDriver = config.DriverPed
 	if ordered then
 		lib.requestModel(taxiDriver, 500)
@@ -27,16 +27,16 @@ RegisterNetEvent('md-aitaxi:client:calltaxi', function()
 		exports[config.Fuel]:SetFuel(aiTaxi, 100.0)
 		TaskVehicleDriveToCoordLongrange(taxi, aiTaxi, pedCoord.x + 2, pedCoord.y - 1, pedCoord.z - 1, 50.0, 60, 1.0)
 		Wait(1000)
-		local loc = #(GetEntityCoords(PlayerPedId()) - GetEntityCoords(aiTaxi))
+		local loc = #(GetEntityCoords(cache.ped) - GetEntityCoords(aiTaxi))
 		Wait(2000)
 		if loc < 10.0 then
-			SetPedIntoVehicle(PlayerPedId(), aiTaxi, 0)
+			SetPedIntoVehicle(cache.ped, aiTaxi, 0)
 			QBCore.Functions.Notify('Set A Way Point So I Know Where To Go')
 		end
 		repeat
 			Wait(1000)
 		until GetFirstBlipInfoId(8) ~= 0
-		if GetVehiclePedIsIn(PlayerPedId()) == aiTaxi then
+		if GetVehiclePedIsIn(cache.ped) == aiTaxi then
 			local wayPointBlip = GetFirstBlipInfoId(8)
 			local coord = Citizen.InvokeNative(0xFA7C7F0AADF25D09, wayPointBlip, Citizen.ResultAsVector())
 			TaskVehicleDriveToCoordLongrange(taxi, aiTaxi, coord.x, coord.y, coord.z - 1, 30.0, 319, 5.0)
@@ -46,7 +46,7 @@ RegisterNetEvent('md-aitaxi:client:calltaxi', function()
 				Wait(1000)
 			until loc2 < 50.0
 			Wait(2000)
-			TaskLeaveVehicle(PlayerPedId(), aiTaxi, 0)
+			TaskLeaveVehicle(cache.ped, aiTaxi, 0)
 			Wait(1000)
 			TaskVehicleDriveWander(taxi, aiTaxi, 50.0, 60)
 			ordered = nil
@@ -71,20 +71,20 @@ RegisterCommand(config.TaxiCommand, function()
 end)
 
 RegisterNetEvent('md-aitaxi:client:autopilot', function()
-	local vehicle = GetVehiclePedIsIn(PlayerPedId(), true)
-	if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
+	local vehicle = GetVehiclePedIsIn(cache.ped, true)
+	if GetPedInVehicleSeat(vehicle, -1) == cache.ped then
 		if IsVehicleValid(GetEntityModel(vehicle)) then
 			autoPilot = true
 			if GetFirstBlipInfoId(8) ~= 0 then
 				Wait(2000)
 				local wayPointBlip = GetFirstBlipInfoId(8)
 				local coord = Citizen.InvokeNative(0xFA7C7F0AADF25D09, wayPointBlip, Citizen.ResultAsVector())
-				TaskVehicleDriveToCoordLongrange(PlayerPedId(), vehicle, coord.x, coord.y, coord.z - 1, 30.0, 319, 20.0)
-				local loc2 = #(GetEntityCoords(PlayerPedId()) - coord)
+				TaskVehicleDriveToCoordLongrange(cache.ped, vehicle, coord.x, coord.y, coord.z - 1, 30.0, 319, 20.0)
+				local loc2 = #(GetEntityCoords(cache.ped) - coord)
 				print(loc2)
 				if loc2 < 5.0 then
 					autoPilot = nil
-					ClearPedTasks(PlayerPedId())
+					ClearPedTasks(cache.ped)
 					ClearVehicleTasks(vehicle)
 				end
 			else
@@ -106,9 +106,9 @@ end)
 RegisterCommand(config.AutopilotstopCommand, function()
 	autoPilot = nil
 
-	local vehicle = GetVehiclePedIsIn(PlayerPedId(), true)
+	local vehicle = GetVehiclePedIsIn(cache.ped, true)
 	if vehicle then
-		ClearPedTasks(PlayerPedId())
+		ClearPedTasks(cache.ped)
 		ClearVehicleTasks(vehicle)
 	end
 end)
@@ -116,11 +116,11 @@ end)
 RegisterCommand(config.TaxiStopCommand, function()
 	ordered = nil
 	Wait(5000)
-	ClearPedTasks(PlayerPedId())
-	ClearVehicleTasks(GetVehiclePedIsIn(PlayerPedId(), true))
-	local vehicle = GetVehiclePedIsIn(PlayerPedId(), true)
+	ClearPedTasks(cache.ped)
+	ClearVehicleTasks(GetVehiclePedIsIn(cache.ped, true))
+	local vehicle = GetVehiclePedIsIn(cache.ped, true)
 	if GetEntityModel(vehicle) == `taxi` then
-		DeleteVehicle(GetVehiclePedIsIn(PlayerPedId(), true))
+		DeleteVehicle(GetVehiclePedIsIn(cache.ped, true))
 	end
 end)
 

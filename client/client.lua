@@ -3,6 +3,18 @@ local config = Config
 local ordered = nil
 local autoPilot = nil
 
+local function IsVehicleValid(vehicleModel)
+	local retval = false
+	if config.AutoPilotCars ~= nil and next(config.AutoPilotCars) ~= nil then
+		for k in pairs(config.AutoPilotCars) do
+			if config.AutoPilotCars[k] ~= nil and GetHashKey(config.AutoPilotCars[k]) == vehicleModel then
+				retval = true
+			end
+		end
+	end
+	return retval
+end
+
 RegisterNetEvent('md-aitaxi:client:payCheck', function()
 	if ordered == nil then
 		TriggerServerEvent('md-aitaxi:server:PayForTaxi')
@@ -123,15 +135,3 @@ RegisterCommand(config.TaxiStopCommand, function()
 		DeleteVehicle(GetVehiclePedIsIn(cache.ped, true))
 	end
 end)
-
-local function IsVehicleValid(vehicleModel)
-	local retval = false
-	if config.AutoPilotCars ~= nil and next(config.AutoPilotCars) ~= nil then
-		for k in pairs(config.AutoPilotCars) do
-			if config.AutoPilotCars[k] ~= nil and GetHashKey(config.AutoPilotCars[k]) == vehicleModel then
-				retval = true
-			end
-		end
-	end
-	return retval
-end

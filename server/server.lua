@@ -1,5 +1,32 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local config = Config
+local AvailableTaxi = 0
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource ~= GetCurrentResourceName() then
+        return
+    end
+    if Config.TaxiLimit then
+        AvailableTaxi = Config.TaxiLimit
+    end
+end)
+
+QBCore.Functions.CreateCallback('md-aitaxi:server:GetAvailableTaxi', function(source, cb)
+    if AvailableTaxi >= 1 then
+        cb(true)
+    else
+        cb(false)
+    end
+end)
+
+RegisterNetEvent('md-aitaxi:server:TaxiUsage',function(isUse)
+    if inUse then
+        AvailableTaxi = AvailableTaxi - 1
+    else
+        AvailableTaxi = AvailableTaxi + 1
+    end
+    -- print(tostring(AvailableTaxi))
+end)
 
 RegisterServerEvent('md-aitaxi:server:CanAffordTaxi', function(distance)
     local src = source

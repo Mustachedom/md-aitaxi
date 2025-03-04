@@ -151,7 +151,7 @@ RegisterNetEvent('md-aitaxi:client:calltaxi', function()
             SetEntityAsMissionEntity(aiTaxi)
 			SortTaxiBlip(aiTaxi)
             SetPedIntoVehicle(taxi, aiTaxi, -1)
-			FuelSystem(aitaxi, 100.0)
+			FuelSystem(aiTaxi, 100.0)
 
             TaskVehicleDriveToCoordLongrange(taxi, aiTaxi, pedCoord.x, pedCoord.y, pedCoord.z, config.PassiveDriveSpeed, config.PassiveDrivingStyle, 1.0)
             Wait(1000)
